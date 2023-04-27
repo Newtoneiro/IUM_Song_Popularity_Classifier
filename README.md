@@ -52,7 +52,7 @@ Skuteczność modelu można obliczać w sposób następujący:
 - Wrzucamy w model n - 1 danych dotyczących kolejnych interwałów czasowych i otrzymujemy predykcję
 - Na podstawie odrzuconego w predykcji interwału czasowego (reprezentującego przyszłość, a co za tym idzie - faktyczne prosperowania artysty) porównujemy otrzymaną predykcję z rzeczywistością w następujący sposób:
 - Bierzemy ostatni interwał zawarty w danych wrzuconych w model - nazwijmy go t0, oraz odrzucony interwał reprezentujący przyszłość - t+1.
-  Na podstawie akcji dotyczących artysty w interwale t0 i t+1 wyznaczamy score na podstawie wzoru (1 _ count(PLAY) + 3 _ count(LIKE) - 1 \* count(SKIP)). Od score t+1 odejmujemy t0 i dostajemy ostateczny score reprezentujący faktyczne prosperowania artysty.
+  Na podstawie akcji dotyczących artysty w interwale t0 i t+1 wyznaczamy score na podstawie wzoru (1 \* count(PLAY) + 3 \* count(LIKE) - 1 \* count(SKIP)). Od score t+1 odejmujemy t0 i dostajemy ostateczny score reprezentujący faktyczne prosperowania artysty.
 - Następnie na podstawie wyliczonego score wyznaczamy faktyczną klasę artysty w sposób następujący:
 - Jeżeli score <= - (liczba użytkowników powiązanych z akcjami) - słabo prosperujący (zanik słuchaczy)
 - Jeżeli score <= (liczba użytkowników powiązanych z akcjami) - średnio prosperujący (stabilni słuchacze)
