@@ -17,6 +17,8 @@ Zadanie polega na stworzeniu modelu służącego do sklasyfikowania artysty / ze
 - słabo prosperujący
   które pozwolą następnie administratorom serwisu "Pozytywka" określić stawki dla tak sklasyfikowanych grup artystów.
 
+Na potrzeby kryteriów biznesowych i analitycznych zakładamy, że płatność dla artysty jest realizowana na kolejny interwał czasowy - czyli co tydzień.
+
 ## Model naiwny
 
 Model naiwny w przypadku naszego zadania to model, który dla każdego artysty zwraca taką samą wartość - będzie to wartość "średnio prosperujący". Taki model uśrednia wydatki na artystów i nie faworyzuje dobrych zespołów, ale też nie odcina tych słabszych.
