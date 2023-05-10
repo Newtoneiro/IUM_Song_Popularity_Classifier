@@ -6,22 +6,28 @@
 
 ## Kontekst zadania
 
-Portal "Pozytywka" opłaca artystów, których utwory są następnie udostępniane użytkownikom portalu. W zależności od tego, jak chętnie słuchane są utwory danego wykonawcy muzycznego - administratorzy portalu mogą regulować stawki z artystami. Dobrze prosperujący artyści mogą dostać premię, a ci mniej popularni - wręcz przeciwnie. "Pozytywka" zbiera dane od użytkowników portalu i przechowuje takie zdarzenia jak odtworzenie utworu, polubienie utworu oraz pominięcie go. Na podstawie tych akcji można wyznaczyć model przewidujący rokowania artysty muzycznego w przyszłości i odpowiednie regulowanie stawki.
+Portal "Pozytywka" opłaca artystów, których utwory są następnie udostępniane użytkownikom portalu. W zależności od tego, jak chętnie słuchane są utwory danego wykonawcy muzycznego - administratorzy portalu mogą regulować stawki z artystami. Dobrze prosperujący artyści mogą dostać premię, a ci mniej popularni - wręcz przeciwnie. "Pozytywka" zbiera dane od użytkowników portalu i przechowuje takie informacje, jak czas słuchania utworów artystów, akcję odsłuchania utworu, polubienia oraz pominięcia go.
 
 ## Zdefiniowane zadania
 
-Zadanie polega na stworzeniu modelu służącego do sklasyfikowania artysty / zespołu na podstawie interakcji użytkowników z jego utworami. Kluczowe będą akcje pominięcia, polubienia jak i samego odtworzenia utworu. Ważną rolę odegra także średni czas słuchania wykonawcy. Model będzie klasyfikować artystę na jedną z 3 kategorii:
+Zadanie polega na stworzeniu modelu, na podstawie którego klient będzie mógł ustalać warunki kontraktów z artystami oraz ocenić, którzy z nich są chętnie, a którzy mniej chętnie słuchani. Kluczowe będą danę reprezentujące szereg czasowy sumarycznych czasów słuchania wykonawcy w danym tygodniu.
 
-- dobrze prosperujący
-- średnio prosperujący
-- słabo prosperujący
-  które pozwolą następnie administratorom serwisu "Pozytywka" określić stawki dla tak sklasyfikowanych grup artystów.
+Na tej podstawie klient będzie mógł we własnym zakresie ustalać stawki dla dobrze prosperujących artystów.
 
 Na potrzeby kryteriów biznesowych i analitycznych zakładamy, że płatność dla artysty jest realizowana na kolejny interwał czasowy - czyli co tydzień.
 
+## Dane wejściowe i wyjściowe
+
+Dane wejściowe będą reprezentowały kolejne interwały czasowe - dane historyczne wraz ze średnim czasem słuchania wykonawcy obliczanym na podstawie długości utworu związanego z akcjami oraz rodzajem akcji. W prostej wersji, będzie to po prostu liczba akcji PLAY w danym tygodniu pomnożona przez czas trwania utworu związanego z akcją. W bardziej zaawansowanej wersji, być może lepiej będzie zachowywać się model, dla którego pod uwagę weźmiemy również akcje SKIP (np. jest to odjęcie od całego czasu słuchania połowy długości utworu związanego z akcją SKIP - ponieważ średnio tyle piosenki jest pomijane.).
+
+Model regresji będzie przewidywać X_t+1 średni czas słuchania utworu na podstawie szeregu czasowego postaci [X_0, X_1, ... X_t],
+gdzie X_n oznacza średni czas słuchania wykonawcy w okresie n.
+
 ## Model naiwny
 
-Model naiwny w przypadku naszego zadania to model, który dla każdego artysty zwraca taką samą wartość - będzie to wartość "średnio prosperujący". Taki model uśrednia wydatki na artystów i nie faworyzuje dobrych zespołów, ale też nie odcina tych słabszych.
+Model naiwny, który będzie stanowił projektowy 'baseline', od którego będziemy później wychodzić to prosta regresja liniowa. Jest to słaby model, nie biorący pod uwagę okresowości ani innych ukrytych zależności między okresami, ale przez to stanowi dobry punkt odniesienia. Jeżeli nie uda nam się stworzyć modelu przebijającego model naiwny pod względem jakości - to możliwe, że dane są błędne albo zadanie należy sformułować w inny sposób.
+
+Model naiwny, jego wizualizację i miary jakości można znaleźć w pliku naive_model.ipynb.
 
 ## Definicja celów biznesowych
 
@@ -32,7 +38,7 @@ Celem biznesowym jest optymalizacja kosztów opłacania artystów muzycznych. Le
 ### Kryterium biznesowe
 
 - Optymalizacja kosztów przeznaczanych na opłacanie artystów udostępniających swoje utwory w serwisie "Pozytywka"
-- Ułatwienie podejmowania decyzji dotyczących artystów na podstawie wyników modelu (promowanie dobrze prosperujących wykonawców)
+- Ułatwienie podejmowania decyzji dotyczących artystów na podstawie wyników modelu (promowanie dobrze prosperujących wykonawców, których średni czas słuchania wzrasta)
 
 ### Weryfikacja spełnienia kryteriów
 
@@ -40,24 +46,10 @@ Celem biznesowym jest optymalizacja kosztów opłacania artystów muzycznych. Le
 
 ### Opis zadań modelowania
 
-W ramach tego zadania analitycznego zajmujemy się klasyfikacją artystów udostępniających swoje dzieła dla portalu "Pozytywka" na podstawie danych zebranych w pewnym okresie czasu. Naszym celem jest określenie, czy artysta jest warty inwestycji, czy raczej powinniśmy obciąć koszty z nim związane.
-Na podstawie dostępnych danych, po ich obróbce i wyekstraktowaniu cech charakterystycznych dla artystów w okresie czasu (liczba akcji PLAY, LIKE, SKIP związanych z ich utworami) i z użyciem modeli klasyfikacyjnych - będziemy dokonywać przewidywania, czy dany artysta jest wart inwestycji.
+W ramach tego zadania analitycznego zajmujemy się przewidywaniem średniego czasu słuchania artysty udostępniającego swoje dzieła dla portalu "Pozytywka" w przyszłości, na podstawie danych zebranych w pewnym okresie czasu. Naszym celem jest przewidzenie średniego czasu słuchania utworów artysty w kolejnym okresie czasu (będącym okresem wyznaczania stawek dla artysty).
+
+Na podstawie dostępnych danych, po ich obróbce i wyekstraktowaniu cech charakterystycznych dla artystów w okresie czasu (średni czas słuchania oszacowany na podstawie akcji PLAY i SKIP w danym okresie) i z użyciem modeli regresyjnych - będziemy dokonywać przewidywania, na podstawie których portal "Pozytywka" będzie mógł zadecydować, czy dany artysta jest wart inwestycji.
 
 ### Analityczne kryteria sukcesu
 
-Analityczne kryterium sukcesu jest silnie związane z danymi offline dostarczonymi przez klienta. Jest określone grono zespołów, które zawsze warto opłacać, bo ich muzyka jest ponadczasowa i chętnie słuchana przez większość użytkowników serwisu. Z drugiej strony, jest masa artystów, którzy dopiero zaczynają swoją przygodę muzyczną lub mają bardzo wąskie grono fanów i jest bardzo mało prawdopodobne, że kiedyś zyskają na popularności.
-Proponowany przez nas model naiwny każdemu artyście przyporządkowuje te samą klasę, a co za tym idzie - każdy z nich dostaje tę samą wypłatę i jest tak samo promowany. Naszym analitycznym kryterium sukcesu będzie stworzenie modelu, który optymalizuje koszty lepiej niż model naiwny. Dla uproszczenia można przyjąć, że zależy nam na otrzymaniu predykcji z błędem nie przekraczającym arbitralnie dobranym parametrem alfa (Przyjmijmy alfa = 80%).
-
-Skuteczność modelu można obliczać w sposób następujący:
-
-- Pomijamy ostatni interwał danych dla wybranego artysty
-- Wrzucamy w model n - 1 danych dotyczących kolejnych interwałów czasowych i otrzymujemy predykcję
-- Na podstawie odrzuconego w predykcji interwału czasowego (reprezentującego przyszłość, a co za tym idzie - faktyczne prosperowania artysty) porównujemy otrzymaną predykcję z rzeczywistością w następujący sposób:
-- Bierzemy ostatni interwał zawarty w danych wrzuconych w model - nazwijmy go t0, oraz odrzucony interwał reprezentujący przyszłość - t+1.
-  Na podstawie akcji dotyczących artysty w interwale t0 i t+1 wyznaczamy score na podstawie wzoru (1 \* count(PLAY) + 3 \* count(LIKE) - 1 \* count(SKIP)). Od score t+1 odejmujemy t0 i dostajemy ostateczny score reprezentujący faktyczne prosperowania artysty.
-- Następnie na podstawie wyliczonego score wyznaczamy faktyczną klasę artysty w sposób następujący:
-- Jeżeli score <= - (liczba użytkowników powiązanych z akcjami) - słabo prosperujący (zanik słuchaczy)
-- Jeżeli score <= (liczba użytkowników powiązanych z akcjami) - średnio prosperujący (stabilni słuchacze)
-- Jeżeli score > (liczba użytkowników powiązanych z akcjami) - dobrze prosperujący (wzrost słuchaczy)
-
-Takie zdefiniowanie obliczania skuteczności modelu pozwala nam na precyzyjne wyznaczanie jakości modelu na podstawie dostarczonych danych offline i porównywanie ich z modelem naiwnym.
+Analitycznym kryterium sukcesu jest stworzenie modelu o miarach jakości lepszych od modelu naiwnego. Dla stworzonego modelu naiwnego oznacza to osiągnięcie modelu regresji o MSE <= 1669.4069131874119. Jest to miara łatwa w sprawdzaniu, w związku z czym będzie dobrym wyznacznikiem spełnienia oczekiwań analitycznych.
