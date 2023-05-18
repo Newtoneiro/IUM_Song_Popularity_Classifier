@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 
 from DataProvider import DataProvider
+from main_models import LinearRegressionModel, LSTMModel
 
 
 @st.cache_data
@@ -31,61 +32,77 @@ def init_buttons():
     button_cols = st.columns(2)
 
     with button_cols[0]:
-        st.button("Add week", on_click=add_week, use_container_width=True)
+        st.button("Add week",
+                  on_click=add_week,
+                  use_container_width=True)
     with button_cols[1]:
-        st.button("Remove week", on_click=remove_week, use_container_width=True)
+        st.button("Remove week",
+                  on_click=remove_week,
+                  use_container_width=True)
 
 
-def init_week_inputs(week_inputs):
+def init_week_inputs(week_inputs, init_data):
     input_cols = st.columns(3)
 
-    for i in range(st.session_state.weeks):
+    for i, val in enumerate(init_data):
         with input_cols[i % 3]:
             week_inputs.append(
                 st.number_input(
                     f"Listening time in week {i + 1}",
-                    min_value=0,
-                    value=5,
+                    min_value=0.0,
+                    value=val,
                     key=f"input-{i}",
                 )
             )
     return week_inputs
 
 
-def init_artist_visualization(artist_data, data_provider):
-    selected_artists = st.multiselect("Select artists", data_provider.get_artists())
-
-    for artist in selected_artists:
-        try:
-            artist_data[artist] = data_provider.get_x_and_y([artist])[0][0, :, 0]
-        except KeyError:
-            st.error(f"Artist {artist} not found")
-    if len(artist_data) > 0:
-        st.line_chart(pd.DataFrame(artist_data))
-
-
 def main():
     week_inputs = []
-    artist_data = {}
+    artist_data = [0.0]
+
     if "weeks" not in st.session_state:
         st.session_state.weeks = 6
 
     data_provider = data_init()
 
     init_header()
-    init_buttons()
-    init_week_inputs(week_inputs)
+
+    isCustomData = st.checkbox('Custom data')
+    if not isCustomData:
+        selected_artist = st.selectbox("Preload artist data",
+                                       data_provider.get_consistent_artists())
+        artist_data = data_provider.get_x_and_y([selected_artist])[0].squeeze()
+    else:
+        init_buttons()
+        artist_data = [0.0 for _ in range(st.session_state.weeks)]
+
+    st.divider()
+
+    init_week_inputs(week_inputs, artist_data)
+
+    future_points = st.slider("Future points",
+                              min_value=1,
+                              max_value=10,
+                              value=5)
 
     st.divider()
     st.header("Predicted listening time")
+
+    naive_model = LinearRegressionModel()
+    lstm_model = LSTMModel()
+
     listening_data = {
-        "Listening time": week_inputs,
-        "Listening time - 5": [x - 5 for x in week_inputs],
+        "Naive prediction": naive_model.predict([x for x in week_inputs],
+                                                future_points),
+        "LSTM prediction": lstm_model.predict([x for x in week_inputs],
+                                              future_points),
+        "Listening time": [x for x in week_inputs] + [None for _
+                                                      in range(future_points)]
     }
     st.line_chart(pd.DataFrame(listening_data))
 
     st.divider()
-    init_artist_visualization(artist_data, data_provider)
 
 
 if __name__ == "__main__":

@@ -21,12 +21,16 @@ class DataProvider:
             x.append(
                 [
                     avg_playtime
-                    for avg_playtime in self._artists_playtime[artist].values[:-1]
+                    for avg_playtime
+                    in self._artists_playtime[artist].values[:-1]
                 ]
             )
             y.append(self._artists_playtime[artist].values[-1])
         x, y = np.array(x), np.array(y)
         return x.reshape((x.shape[0], x.shape[1], 1)), y
+
+    def get_consistent_artists(self):
+        return sorted(self._artists_playtime.keys())
 
     def get_artists(self):
         return self._all_artists
@@ -48,7 +52,10 @@ class DataProvider:
             how="left",
         )
         data = data.merge(
-            artists[["id", "name"]], left_on="id_artist", right_on="id", how="left"
+            artists[["id", "name"]],
+            left_on="id_artist",
+            right_on="id",
+            how="left"
         )
         self._raw_data = data
 
@@ -75,7 +82,8 @@ class DataProvider:
         consistent_artists = []
 
         for artist in self._all_artists:
-            if len(data[data["name"] == artist]["weeks_ordered"].unique()) == 12:
+            if len(data[data["name"] == artist]["weeks_ordered"].unique())\
+                  == 12:
                 consistent_artists.append(artist)
         self._consistent_artists = consistent_artists
 
