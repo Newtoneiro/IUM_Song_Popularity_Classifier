@@ -13,6 +13,15 @@ def data_init():
         return data_provider
 
 
+@st.cache_data
+def models_init():
+    with st.spinner("Loading models..."):
+        naive_model = LinearRegressionModel()
+        lstm_model = LSTMModel()
+
+        return naive_model, lstm_model
+
+
 # These are callback functions for buttons
 def add_week():
     st.session_state.weeks += 1
@@ -65,6 +74,7 @@ def main():
         st.session_state.weeks = 6
 
     data_provider = data_init()
+    naive_model, lstm_model = models_init()
 
     init_header()
 
@@ -88,9 +98,6 @@ def main():
 
     st.divider()
     st.header("Predicted listening time")
-
-    naive_model = LinearRegressionModel()
-    lstm_model = LSTMModel()
 
     listening_data = {
         "Naive prediction": naive_model.predict([x for x in week_inputs],
