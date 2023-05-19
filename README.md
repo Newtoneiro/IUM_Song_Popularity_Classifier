@@ -2,6 +2,8 @@
 
 ## Uruchomenie programu
 
+[ium_preview.webm](https://github.com/Newtoneiro/IUM_Song_Popularity_Classifier/assets/79006719/a8bf2cc0-dd04-4857-b16d-42f1fba1a522)
+
 Aby uruchomić program należy wykonać następujące kroki:
 
 1. Zainstalować zależności z pliku `requirements.txt` (najlepiej wirtualne środowisko)
