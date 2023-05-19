@@ -1,5 +1,13 @@
 # Projekt IUM
 
+## Uruchomenie programu
+
+Aby uruchomić program należy wykonać następujące kroki:
+
+1. Zainstalować zależności z pliku `requirements.txt` (najlepiej wirtualne środowisko)
+2. Wywołać komendę `streamlit run app.py` w katalogu głównym projektu
+3. W przeglądarce internetowej powinna otworzyć się strona z aplikacją
+
 ## Treść zadania
 
 “Nasz serwis zarabia wtedy, gdy ludzie słuchają muzyki. Jeśli nie wiemy ile czasu będą słuchali jej w przyszłości, to trudno nam rozliczać się z artystami i negocjować z nimi stawki”
