@@ -37,7 +37,8 @@ class DataProvider:
 
     def get_train_test_sets(self, proportions=0.5):
         artists = self._artists_playtime.keys()
-        train = sample(artists, round(proportions * len(artists)))
+        train = sample(artists,
+                       round(proportions * len(artists)))
         test = artists - train
         return train, test
 
