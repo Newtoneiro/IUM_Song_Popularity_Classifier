@@ -1,6 +1,6 @@
 # Projekt IUM
 
-## Preview 
+## Preview
 
 [ium_preview.webm](https://github.com/Newtoneiro/IUM_Song_Popularity_Classifier/assets/79006719/a8bf2cc0-dd04-4857-b16d-42f1fba1a522)
 
@@ -65,3 +65,9 @@ Na podstawie dostępnych danych, po ich obróbce i wyekstraktowaniu cech charakt
 ### Analityczne kryteria sukcesu
 
 Analitycznym kryterium sukcesu jest stworzenie modelu o miarach jakości lepszych od modelu naiwnego. Dla stworzonego modelu naiwnego oznacza to osiągnięcie modelu regresji o MSE <= 1669.4069131874119. Jest to miara łatwa w sprawdzaniu, w związku z czym będzie dobrym wyznacznikiem spełnienia oczekiwań analitycznych.
+
+# Model LSTM
+
+Do realizacji zadania zdecydowaliśmy się wykorzystać model LSTM, ze względu na to, że idealnie pasuje do naszego zadania - przewidywania szeregów czasowych. Pamięć krótkotrwała i długotrwała pozwalają w sposób precyzyjny przewidywać średni czas słuchania wykonawcy muzycznego w kolejnych interwałach czasowych.
+
+Do stworzenia modelu wykożystaliśmy `tf.keras.Sequential()` z biblioteki tf.keras. Przed wytrenowaniem modelu przystąpiliśmy do optymalizacji hiperparametrów przy pomocy biblioteki keras_tuner. Wykorzystana została metoda siatki hiperparametrów, która na potrzeby naszego projektu - okazała się wystarczająco dobra. Po następnym wytrenowaniu modelu z hiperparametrami osiągniętymi dzięki hipersiatce, otrzymaliśmy satysfakcjonujący nas model, którego porównanie z modelem naiwnym zostało przedstawione na końcu pliku `lstm_model.ipynb`.
