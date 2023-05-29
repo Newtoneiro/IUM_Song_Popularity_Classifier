@@ -8,7 +8,15 @@
 
 ![Screenshot_2023-05-29-12:59:40](https://github.com/Newtoneiro/IUM_Song_Popularity_Classifier/assets/79006719/3a7acdba-30df-46b7-a006-111d830c6ebe)
 
-## Uruchomenie programu
+## Uruchomienie programu z testem AB
+
+Aby uruchomić program należy wykonać następujące kroki:
+
+1. Zainstalować zależności z pliku `requirements.txt` (najlepiej wirtualne środowisko)
+2. Wywołać komendę `python3 rest_api.py` w katalogu głównym projektu
+3. Wysłać zapytanie do endpointu `localhost:8888/predict`
+
+## Uruchomenie programu wizualizującego modele
 
 Aby uruchomić program należy wykonać następujące kroki:
 
