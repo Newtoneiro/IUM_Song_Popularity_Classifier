@@ -4,6 +4,10 @@
 
 [ium_preview.webm](https://github.com/Newtoneiro/IUM_Song_Popularity_Classifier/assets/79006719/a8bf2cc0-dd04-4857-b16d-42f1fba1a522)
 
+![Screenshot_2023-05-29-12:59:53](https://github.com/Newtoneiro/IUM_Song_Popularity_Classifier/assets/79006719/8fa4b759-e509-42a9-964a-cd44a43c7068)
+
+![Screenshot_2023-05-29-12:59:40](https://github.com/Newtoneiro/IUM_Song_Popularity_Classifier/assets/79006719/3a7acdba-30df-46b7-a006-111d830c6ebe)
+
 ## Uruchomenie programu
 
 Aby uruchomić program należy wykonać następujące kroki:
