@@ -1,5 +1,5 @@
 /venv
 **/__pycache__
 /.vscode
-parameter_tuning/
+parameter_tuning
 service_logs.log
