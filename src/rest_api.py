@@ -21,11 +21,11 @@ def log(id, chosen_model, input_data, output_data):
 def serve_foo():
     data = request.json
     if not (req_id := data.get("id")):
-        return "No id provided. id field is necessary."
+        return "No id provided. id field is necessary.", 400
     if not (inputs := data.get("week_inputs")):
-        return "No data provided. week_inputs field is necessary."
+        return "No data provided. week_inputs field is necessary.", 400
     if not (future_points := data.get("future_points")):
-        return "No future points provided. future_points field is necessary."
+        return "No future points provided. future_points field is necessary.", 400
     sum = 0
     for let in req_id:
         sum += ord(let)

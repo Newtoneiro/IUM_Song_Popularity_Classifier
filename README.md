@@ -13,15 +13,18 @@
 Aby uruchomić program należy wykonać następujące kroki:
 
 1. Zainstalować zależności z pliku `requirements.txt` (najlepiej wirtualne środowisko)
-2. Wywołać komendę `python3 rest_api.py` w katalogu głównym projektu
-3. Wysłać zapytanie do endpointu `localhost:8888/predict`
+2. Wywołać komendę `python3 src/rest_api.py` w katalogu głównym projektu
+3. Wysłać zapytanie do endpointu `localhost:8888/predict` z body w formacie json zawierającym:
+   1. id - identyfikator danego requestu
+   2. week_inputs - listę odtworzeń w poszczególnych tygodniach
+   3. future_points - liczbę przyszłych rekordów ktróre model ma przewidzieć
 
 ## Uruchomenie programu wizualizującego modele
 
 Aby uruchomić program należy wykonać następujące kroki:
 
 1. Zainstalować zależności z pliku `requirements.txt` (najlepiej wirtualne środowisko)
-2. Wywołać komendę `streamlit run app.py` w katalogu głównym projektu
+2. Wywołać komendę `streamlit run src/main.py` w katalogu głównym projektu
 3. W przeglądarce internetowej powinna otworzyć się strona z aplikacją
 
 ## Treść zadania

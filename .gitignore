@@ -3,3 +3,4 @@
 /.vscode
 parameter_tuning/
 service_logs.log
+**/.pytest_cache
